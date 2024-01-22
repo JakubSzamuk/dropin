@@ -14,3 +14,4 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [\App\AppController::class, 'index']);
+Route::get('/create', [\App\FileCreatorController::class, 'index']);

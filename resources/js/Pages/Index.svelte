@@ -1,11 +1,12 @@
-<script>
-    export let title;
-</script>
 
+<main class="main_background w-full h-svh flex justify-center items-center">
+    <div class="primary_font text-white">
+        <h1 class="text-5xl">Dropin</h1>
+        <p class="text-2xl">The Fast Way to share files.</p>
+        <div class="mt-4">
+            <a href="/file" class="bg-primary px-6 py-2 rounded-full text-2xl">Enter Code</a>
+            <a href="/create" class="bg-primary px-6 py-2 rounded-full text-2xl">Create</a>
+        </div>
+    </div>
+</main>
 
-
-<div class="flex flex-col items-center text-center space-y-4">
-
-    <h1 class="block mt-4 font-bold text-4xl">{title}</h1>
-
-</div>
