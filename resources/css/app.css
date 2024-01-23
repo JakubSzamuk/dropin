@@ -9,3 +9,20 @@
 .main_background {
     background: linear-gradient(117deg, #181818 5.66%, #303A43 110.19%);
 }
+
+.header_react input:focus {
+    opacity: 1;
+}
+.header_react input:focus + h1 {
+    opacity: 0;
+}
+input:focus, textarea:focus {
+    outline: none;
+}
+
+.primary_bg {
+    background: rgba(32, 32, 32, 0.74);
+}
+.dark_bg {
+    background: #111;
+}

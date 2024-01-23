@@ -1,11 +1,9 @@
 <?php
 
-namespace App;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Inertia\Inertia;
 
-use Inertia\Response;
 class AppController extends Controller
 {
     public function index()
