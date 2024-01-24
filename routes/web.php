@@ -15,3 +15,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [\App\Http\Controllers\AppController::class, 'index']);
 Route::get('/create', [\App\Http\Controllers\FileCreatorController::class, 'index']);
+
+
+Route::get('/file/{id}', [\App\Http\Controllers\FileCreatorController::class, 'get_file']);
+Route::post('file/{id}', [\App\Http\Controllers\FileCreatorController::class, 'get_secure']);
+
+Route::post('/create', [\App\Http\Controllers\FileCreatorController::class, 'create']);

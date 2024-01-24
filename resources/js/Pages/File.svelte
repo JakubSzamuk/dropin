@@ -1,13 +1,49 @@
-<script lang="ts">
+<script lang="js">
+    import axios from "axios";
+    import { onMount } from 'svelte';
+
+
+    export let file;
+    export let file_id;
+    export let needs_password;
 
     $: header = "New File";
-    $: usePassword = false;
+    $: usePassword = needs_password;
 
     let password = "";
     let file_body = "";
 
-    const handle_save = () => {
+    onMount(() => {
+        if (file) {
+            header = file.file_title;
+            file_body = file.file_content;
+        }
+    });
+    const handle_secure_fetch = () => {
+        axios.post(`/file/${file_id}`, {
+            file_password: password
+        }).then(res => {
+            if (res.data.success == true) {
+                header = res.data.file.file_title;
+                file_body = res.data.file.file_content;
+                needs_password = false;
+            }
+        })
+    }
 
+
+    const handle_save = () => {
+        if (!file_body || !header) return alert("Please enter a title and some content");
+
+        axios.post("/create", {
+            file_title: header,
+            file_content: file_body,
+            file_password: password
+        }).then(res => {
+            if (res.data.success == true) {
+                window.location.href = `/file/${res.data.file_id}`;
+            }
+        })
     };
 </script>
 
@@ -15,11 +51,13 @@
     <div class="w-2/5 min-h-svh pt-36">
         <input class="min-w-1/4 text-5xl bg-transparent" value={header || "New file"} on:change={(e) => header = e.target.value} />
         <textarea class="w-full p-4 rounded-md primary_bg min-h-[700px] bg-transparent resize-none" bind:value={file_body} />
+        {#if !(file || file_id)}
         <div class="flex items-center mt-2 text-2xl">
             <p>Save as:</p>
             <button class="ml-auto mr-4 px-4 py-2 rounded-full primary_bg text-white primary_font" on:click={() => usePassword = true}>Secret</button>
-            <button class="px-4 py-2 rounded-full primary_bg text-white primary_font">Public</button>
+            <button class="px-4 py-2 rounded-full primary_bg text-white primary_font" on:click={handle_save}>Public</button>
         </div>
+        {/if}
     </div>
     {#if usePassword}
         <div class="w-full h-full flex justify-center items-center absolute top-0">
@@ -27,7 +65,7 @@
                 <p class="mb-2">Enter a password</p>
                 <div class="flex relative items-center">
                     <input bind:value={password} class="w-full p-4 rounded-full primary_bg" placeholder="password" type="password" />
-                    <button class="ml-auto mr-4 px-4 py-2 rounded-full primary_bg text-white primary_font absolute right-0">Save</button>
+                    <button class="ml-auto mr-4 px-4 py-2 rounded-full primary_bg text-white primary_font absolute right-0" on:click={needs_password ? handle_secure_fetch : handle_save}>Save</button>
                 </div>
             </div>
         </div>
