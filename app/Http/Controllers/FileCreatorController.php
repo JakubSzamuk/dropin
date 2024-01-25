@@ -10,12 +10,13 @@ class FileCreatorController extends Controller
 {
     public function index()
     {
-        return Inertia::render('File');
+        return Inertia::render('FileCreator');
     }
 
 
     public function share_file(Request $request) {
-        return Inertia::render('Success', ['file'=> $request->session()->remove('file')]);
+        // return Inertia::render('Success', ['file'=> $request->session()->remove('file')]);
+        return Inertia::render('Success');
     }
 
     public function create(Request $request)
@@ -24,6 +25,7 @@ class FileCreatorController extends Controller
         $file->file_title = $request->input('file_title');
         $file->file_content = $request->input('file_content');
         $file->file_password = $request->input('file_password');
+
         $file->save();
         unset($file->file_password);
         $request->session()->put('file', $file);
@@ -33,13 +35,12 @@ class FileCreatorController extends Controller
         $file = drop_file::find($id);
         if ($file->file_password != null) {
             return Inertia::render('File', [
-                'file_id' => $file->id,
-                'needs_password' => true
+                'fileProp' => ['file_id' => $file->id, 'requiresPassword' => true],
             ]);
         } else {
             unset($file->file_password);
             return Inertia::render('File', [
-                'file' => $file
+                'fileProp' => $file
             ]);
         }
     }
@@ -59,8 +60,6 @@ class FileCreatorController extends Controller
             return inertia::render('File', [
                 'file'=> $file
             ]);
-
-            // return json_encode(['success' => true, 'file' => $file]);
         } else {
             return Inertia::render('File', [
                 'needs_password' => true,
