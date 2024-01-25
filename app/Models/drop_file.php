@@ -10,5 +10,6 @@ class drop_file extends Model
         'file_title',
         'file_content',
         'file_password',
+        'file_code'
     ];
 }

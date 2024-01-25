@@ -8,10 +8,6 @@ class AppController extends Controller
 {
     public function index()
     {
-        return Inertia::render('Index', [
-
-            'title' => 'Laravel 10, Inertia.js, Svelte, Tailwind CSS',
-
-        ]);
+        return Inertia::render('Index');
     }
 }

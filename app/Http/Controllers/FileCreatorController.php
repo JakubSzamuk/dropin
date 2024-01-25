@@ -12,6 +12,12 @@ class FileCreatorController extends Controller
     {
         return Inertia::render('File');
     }
+
+
+    public function share_file(Request $request) {
+        return Inertia::render('Success', ['file'=> $request->session()->remove('file')]);
+    }
+
     public function create(Request $request)
     {
         $file = new drop_file();
@@ -19,7 +25,9 @@ class FileCreatorController extends Controller
         $file->file_content = $request->input('file_content');
         $file->file_password = $request->input('file_password');
         $file->save();
-        return json_encode(['success' => true, 'file_id' => $file->id]);
+        unset($file->file_password);
+        $request->session()->put('file', $file);
+        return to_route('saved_file');
     }
     public function get_file($id) {
         $file = drop_file::find($id);
@@ -39,13 +47,26 @@ class FileCreatorController extends Controller
     public function get_secure(Request $request, string $id) {
         $file = drop_file::find($id);
         if ($file == null) {
-            return json_encode(['success' => false]);
+            return Inertia::render('File', [
+                'needs_password' => true,
+
+                'file_id' => $id
+            ]);
         }
         if ($file->file_password == $request->input('file_password')) {
             unset($file->file_password);
-            return json_encode(['success' => true, 'file' => $file]);
+
+            return inertia::render('File', [
+                'file'=> $file
+            ]);
+
+            // return json_encode(['success' => true, 'file' => $file]);
         } else {
-            return json_encode(['success' => false]);
+            return Inertia::render('File', [
+                'needs_password' => true,
+
+                'file_id' => $id
+            ]);
         }
     }
 }

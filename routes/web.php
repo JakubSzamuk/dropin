@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [\App\Http\Controllers\AppController::class, 'index']);
 Route::get('/create', [\App\Http\Controllers\FileCreatorController::class, 'index']);
+Route::get('/savedFile', [\App\Http\Controllers\FileCreatorController::class,'share_file'])->name('saved_file');
 
 
 Route::get('/file/{id}', [\App\Http\Controllers\FileCreatorController::class, 'get_file']);
